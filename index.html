@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PIXEL_DEV // Portfolio</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+  /* ===========================
+     0. ROOT VARIABLES
+  =========================== */
+  :root{
+    --bg-void:        #0b0d17;
+    --bg-panel:       #12152633;
+    --bg-panel-solid: #141728;
+    --bg-panel-alt:   #1b1f38;
+    --border-dark:    #05060c;
+    --neon-cyan:      #4dfbff;
+    --neon-cyan-dim:  #1fa8ad;
+    --neon-pink:      #ff4dd8;
+    --neon-yellow:    #ffe14d;
+    --neon-green:     #6dff8f;
+    --text-main:      #e6f7ff;
+    --text-dim:       #8aa0c0;
+    --step-shadow:    #000000;
+
+    --font-head: 'Press Start 2P', cursive;
+    --font-body: 'Pixelify Sans', sans-serif;
+
+    --pixel-border: 4px;
+    --radius: 0px;
+  }
+
+  /* ===========================
+     1. RESET / BASE
+  =========================== */
+  *,*::before,*::after{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html{
+    scroll-behavior: smooth;
+    scroll-padding-top: 90px;
+  }
+
+  body{
+    background-color: var(--bg-void);
+    background-image:
+      radial-gradient(circle at 20% 20%, #1a1e3a 0%, transparent 45%),
+      radial-gradient(circle at 80% 70%, #251a3a 0%, transparent 45%),
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 4px);
+    color: var(--text-main);
+    font-family: var(--font-body);
+    font-size: 18px;
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  img, svg, .pixel-avatar, .pixel-icon{
+    image-rendering: pixelated;
+    image-rendering: crisp-edges;
+    image-rendering: -moz-crisp-edges;
+  }
+
+  h1,h2,h3,h4{
+    font-family: var(--font-head);
+    line-height: 1.5;
+    letter-spacing: 1px;
+  }
+
+  a{
+    color: inherit;
+    text-decoration: none;
+  }
+
+  ul{ list-style: none; }
+
+  ::selection{
+    background: var(--neon-pink);
+    color: var(--bg-void);
+  }
+
+  /* Scrollbar - pixel style */
+  ::-webkit-scrollbar{ width: 14px; }
+  ::-webkit-scrollbar-track{ background: var(--bg-void); border-left: 4px solid var(--border-dark); }
+  ::-webkit-scrollbar-thumb{ background: var(--neon-cyan-dim); border: 3px solid var(--bg-void); }
+  ::-webkit-scrollbar-thumb:hover{ background: var(--neon-cyan); }
+
+  /* ===========================
+     2. UTILITY: PIXEL BORDER / SHADOW SYSTEM
+  =========================== */
+  .pixel-border{
+    border: var(--pixel-border) solid var(--neon-cyan);
+    box-shadow:
+      0 0 0 4px var(--border-dark),
+      6px 6px 0 0 var(--border-dark);
+    image-rendering: pixelated;
+  }
+
+  .pixel-panel{
+    background: var(--bg-panel-solid);
+    border: var(--pixel-border) solid var(--neon-cyan-dim);
+    box-shadow:
+      0 0 0 4px var(--border-dark),
+      8px 8px 0 0 var(--border-dark);
+    position: relative;
+  }
+
+  .pixel-panel::before{
+    content: "";
+    position: absolute;
+    top: -4px; left: -4px; right: -4px; bottom: -4px;
+    border: 4px solid transparent;
+    pointer-events: none;
+  }
+
+  .section-label{
+    font-family: var(--font-head);
+    font-size: 0.7rem;
+    color: var(--neon-yellow);
+    letter-spacing: 2px;
+    margin-bottom: 10px;
+    display: inline-block;
+  }
+
+  .section-label::before{ content: "// "; color: var(--neon-pink); }
+
+  .section-title{
+    font-size: clamp(1.4rem, 4vw, 2.2rem);
+    color: var(--neon-cyan);
+    text-shadow: 3px 3px 0 var(--border-dark), 0 0 18px rgba(77,251,255,0.35);
+    margin-bottom: 40px;
+  }
+
+  .container{
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  section{
+    padding: 100px 0 60px;
+  }
+
+  /* ===========================
+     3. NAVBAR
+  =========================== */
+  .navbar{
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 999;
+    background: rgba(11,13,23,0.92);
+    border-bottom: 4px solid var(--neon-cyan);
+    box-shadow: 0 6px 0 0 var(--border-dark);
+    backdrop-filter: blur(2px);
+  }
+
+  .nav-inner{
+    max-width: 1160px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .nav-logo{
+    font-family: var(--font-head);
+    font-size: 0.9rem;
+    color: var(--neon-pink);
+    text-shadow: 2px 2px 0 var(--border-dark);
+  }
+
+  .nav-logo span{ color: var(--neon-cyan); }
+
+  .nav-links{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .nav-links a{
+    font-family: var(--font-head);
+    font-size: 0.6rem;
+    padding: 10px 12px;
+    color: var(--text-main);
+    background: var(--bg-panel-alt);
+    border: 3px solid var(--border-dark);
+    box-shadow: 3px 3px 0 0 var(--border-dark);
+    transition: transform 0.08s ease, background 0.15s ease, color 0.15s ease;
+    white-space: nowrap;
+  }
+
+  .nav-links a:hover{
+    background: var(--neon-cyan);
+    color: var(--bg-void);
+    transform: translate(-2px,-2px);
+    box-shadow: 5px 5px 0 0 var(--border-dark);
+  }
+
+  .nav-links a:active{
+    transform: translate(1px,1px);
+    box-shadow: 1px 1px 0 0 var(--border-dark);
+  }
+
+  .nav-toggle{
+    display: none;
+    font-family: var(--font-head);
+    font-size: 0.7rem;
+    background: var(--neon-cyan);
+    color: var(--bg-void);
+    border: 3px solid var(--border-dark);
+    padding: 10px 12px;
+    cursor: pointer;
+    box-shadow: 3px 3px 0 0 var(--border-dark);
+  }
+
+  /* ===========================
+     4. HERO / ABOUT
+  =========================== */
+  .hero{
+    padding-top: 150px;
+    display: flex;
+    align-items: center;
+    gap: 60px;
+    flex-wrap: wrap;
+  }
+
+  .hero-avatar-wrap{
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .pixel-avatar{
+    width: 220px;
+    height: 220px;
+    background:
+      linear-gradient(135deg, #2a2f55 25%, transparent 25%) 0 0/20px 20px,
+      linear-gradient(225deg, #2a2f55 25%, transparent 25%) 0 0/20px 20px,
+      linear-gradient(45deg, #2a2f55 25%, transparent 25%) 0 0/20px 20px,
+      linear-gradient(315deg, #2a2f55 25%, #1b1f38 25%) 0 0/20px 20px;
+    border: 6px solid var(--neon-cyan);
+    box-shadow:
+      0 0 0 4px var(--border-dark),
+      10px 10px 0 0 var(--border-dark),
+      0 0 30px rgba(77,251,255,0.25);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-head);
+    font-size: 2.2rem;
+    color: var(--neon-cyan);
+  }
+
+  .hero-text{
+    flex: 1 1 400px;
+  }
+
+  .hero-title{
+    font-size: clamp(1.5rem, 5vw, 2.6rem);
+    color: var(--text-main);
+    margin-bottom: 14px;
+    text-shadow: 3px 3px 0 var(--border-dark);
+  }
+
+  .hero-title .highlight{
+    color: var(--neon-pink);
+  }
+
+  .hero-role{
+    font-family: var(--font-head);
+    font-size: 0.85rem;
+    color: var(--neon-green);
+    margin-bottom: 24px;
+    display: inline-block;
+    background: var(--bg-panel-alt);
+    padding: 8px 12px;
+    border: 3px solid var(--border-dark);
+    box-shadow: 4px 4px 0 0 var(--border-dark);
+  }
+
+  .hero-bio{
+    max-width: 560px;
+    color: var(--text-dim);
+    font-size: 1.15rem;
+    margin-bottom: 30px;
+  }
+
+  .hero-cta{
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* ===========================
+     5. PIXEL BUTTONS (shared)
+  =========================== */
+  .btn-pixel{
+    font-family: var(--font-head);
+    font-size: 0.7rem;
+    padding: 14px 20px;
+    border: 3px solid var(--border-dark);
+    background: var(--neon-cyan);
+    color: var(--bg-void);
+    box-shadow: 5px 5px 0 0 var(--border-dark);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.08s ease, box-shadow 0.08s ease, background 0.15s ease;
+  }
+
+  .btn-pixel:hover{
+    transform: translate(-2px,-2px);
+    box-shadow: 7px 7px 0 0 var(--border-dark);
+  }
+
+  .btn-pixel:active{
+    transform: translate(2px,2px);
+    box-shadow: 2px 2px 0 0 var(--border-dark);
+  }
+
+  .btn-pixel.alt{
+    background: var(--bg-panel-alt);
+    color: var(--neon-cyan);
+    border-color: var(--neon-cyan);
+  }
+
+  .btn-pixel.pink{
+    background: var(--neon-pink);
+    color: var(--bg-void);
+  }
+
+  /* ===========================
+     6. SKILLS
+  =========================== */
+  .skills-grid{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 14px;
+  }
+
+  .skill-tag{
+    font-family: var(--font-head);
+    font-size: 0.65rem;
+    padding: 14px 18px;
+    background: var(--bg-panel-alt);
+    border: 3px solid var(--neon-cyan-dim);
+    box-shadow: 4px 4px 0 0 var(--border-dark);
+    color: var(--text-main);
+    transition: all 0.15s ease;
+  }
+
+  .skill-tag:hover{
+    border-color: var(--neon-yellow);
+    color: var(--neon-yellow);
+    transform: translateY(-3px);
+  }
+
+  /* ===========================
+     7. RESUME
+  =========================== */
+  .resume-box{
+    padding: 36px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .resume-box p{
+    color: var(--text-dim);
+    max-width: 600px;
+    font-size: 1.1rem;
+  }
+
+  .resume-box h3{
+    font-size: 1.1rem;
+    color: var(--neon-cyan);
+    margin-bottom: 10px;
+  }
+
+  /* ===========================
+     8. AWARDS
+  =========================== */
+  .awards-list{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 20px;
+  }
+
+  .award-card{
+    padding: 22px;
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+
+  .award-icon{
+    font-size: 1.6rem;
+    flex-shrink: 0;
+  }
+
+  .award-card h4{
+    font-size: 0.8rem;
+    color: var(--neon-yellow);
+    margin-bottom: 8px;
+  }
+
+  .award-card p{
+    color: var(--text-dim);
+    font-size: 1rem;
+  }
+
+  /* ===========================
+     9. PORTFOLIO
+  =========================== */
+  .portfolio-grid{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 28px;
+  }
+
+  .project-card{
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  .project-thumb{
+    height: 150px;
+    background:
+      repeating-linear-gradient(45deg, #1b1f38, #1b1f38 10px, #232852 10px, #232852 20px);
+    border-bottom: 4px solid var(--border-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-head);
+    font-size: 0.7rem;
+    color: var(--neon-cyan-dim);
+  }
+
+  .project-body{
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    gap: 12px;
+  }
+
+  .project-body h3{
+    font-size: 0.9rem;
+    color: var(--neon-cyan);
+  }
+
+  .project-body p{
+    color: var(--text-dim);
+    font-size: 1rem;
+    flex: 1;
+  }
+
+  .project-tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .project-tags span{
+    font-size: 0.65rem;
+    font-family: var(--font-head);
+    padding: 5px 8px;
+    background: var(--bg-void);
+    border: 2px solid var(--neon-pink);
+    color: var(--neon-pink);
+  }
+
+  .project-actions{
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+  }
+
+  .project-actions .btn-pixel{
+    font-size: 0.6rem;
+    padding: 10px 14px;
+    box-shadow: 3px 3px 0 0 var(--border-dark);
+  }
+
+  /* ===========================
+     10. CONTACT
+  =========================== */
+  .contact-panel{
+    padding: 40px;
+    text-align: center;
+  }
+
+  .contact-panel p{
+    color: var(--text-dim);
+    margin-bottom: 30px;
+    font-size: 1.15rem;
+  }
+
+  .contact-buttons{
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+
+  .contact-btn{
+    font-family: var(--font-head);
+    font-size: 0.7rem;
+    padding: 18px 24px;
+    border: 3px solid var(--border-dark);
+    box-shadow: 5px 5px 0 0 var(--border-dark);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    min-width: 140px;
+    transition: transform 0.08s ease, box-shadow 0.08s ease;
+  }
+
+  .contact-btn:hover{
+    transform: translate(-3px,-3px);
+    box-shadow: 8px 8px 0 0 var(--border-dark);
+  }
+
+  .contact-btn:active{
+    transform: translate(2px,2px);
+    box-shadow: 2px 2px 0 0 var(--border-dark);
+  }
+
+  .contact-btn .pixel-icon{
+    width: 32px;
+    height: 32px;
+  }
+
+  .contact-btn.instagram{ background: #ff4dd8; color: #1a0014; }
+  .contact-btn.whatsapp{ background: #6dff8f; color: #002b0b; }
+  .contact-btn.youtube{ background: #ff4d4d; color: #2b0000; }
+
+  /* ===========================
+     10b. COMING SOON
+  =========================== */
+  .coming-soon-panel{
+    padding: 60px 40px;
+    text-align: center;
+  }
+
+  .coming-soon-icon{
+    font-size: 3rem;
+    margin-bottom: 20px;
+    animation: pulse 1.6s steps(4) infinite;
+  }
+
+  @keyframes pulse{
+    0%, 100%{ transform: scale(1); }
+    50%{ transform: scale(1.15); }
+  }
+
+  .coming-soon-panel h3{
+    font-size: 0.85rem;
+    color: var(--neon-yellow);
+    margin-bottom: 16px;
+    letter-spacing: 1px;
+  }
+
+  .coming-soon-panel p{
+    color: var(--text-dim);
+    font-size: 1.1rem;
+    margin-bottom: 30px;
+  }
+
+  .loading-bar-track{
+    max-width: 420px;
+    margin: 0 auto;
+    height: 26px;
+    background: var(--bg-panel-alt);
+    border: 3px solid var(--border-dark);
+    box-shadow: 0 0 0 3px var(--neon-cyan-dim);
+    padding: 4px;
+    overflow: hidden;
+  }
+
+  .loading-bar-fill{
+    height: 100%;
+    width: 35%;
+    background: repeating-linear-gradient(
+      90deg,
+      var(--neon-cyan) 0px, var(--neon-cyan) 10px,
+      var(--neon-cyan-dim) 10px, var(--neon-cyan-dim) 20px
+    );
+    animation: loading-shift 1s linear infinite;
+  }
+
+  @keyframes loading-shift{
+    from{ background-position: 0 0; }
+    to{ background-position: 40px 0; }
+  }
+
+  /* ===========================
+     11. FOOTER
+  =========================== */
+  footer{
+    text-align: center;
+    padding: 40px 20px;
+    font-family: var(--font-head);
+    font-size: 0.6rem;
+    color: var(--text-dim);
+    border-top: 4px solid var(--border-dark);
+    margin-top: 40px;
+  }
+
+  footer span{ color: var(--neon-cyan); }
+
+  /* ===========================
+     12. RESPONSIVE
+  =========================== */
+  @media (max-width: 860px){
+    .nav-links{
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      order: 3;
+    }
+    .nav-links.open{ display: flex; }
+    .nav-toggle{ display: inline-block; }
+    .nav-inner{ position: relative; }
+    .hero{ padding-top: 130px; text-align: center; justify-content: center; }
+    .hero-cta{ justify-content: center; }
+    .resume-box{ flex-direction: column; text-align: center; }
+  }
+
+  @media (max-width: 480px){
+    .pixel-avatar{ width: 160px; height: 160px; font-size: 1.6rem; }
+    .section-title{ font-size: 1.3rem; }
+    .btn-pixel, .nav-links a{ font-size: 0.6rem; }
+    section{ padding: 80px 0 40px; }
+  }
+</style>
+</head>
+<body>
+
+  <!-- ============ NAVBAR ============ -->
+  <nav class="navbar">
+    <div class="nav-inner">
+      <div class="nav-logo">&lt;<span>PIXEL</span>_DEV/&gt;</div>
+      <button class="nav-toggle" id="navToggle">MENU</button>
+      <ul class="nav-links" id="navLinks">
+        <li><a href="#home">[HOME]</a></li>
+        <li><a href="#about">[ABOUT]</a></li>
+        <li><a href="#contact">[CONTACT]</a></li>
+        <li><a href="#coming-soon">[COMING SOON]</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ============ HERO / ABOUT ============ -->
+  <section id="home">
+    <div class="container hero" id="about">
+      <div class="hero-avatar-wrap">
+        <div class="pixel-avatar pixel-border">◕‿◕</div>
+      </div>
+      <div class="hero-text">
+        <span class="section-label">player_01.init()</span>
+        <h1 class="hero-title">Hi, I'm <span class="highlight">Jane Coder</span></h1>
+        <span class="hero-role">FULL-STACK DEV // GAME TINKERER</span>
+        <p class="hero-bio">
+          I build pixel-perfect web experiences and small indie games.
+          Currently leveling up in front-end architecture, retro UI design,
+          and turning coffee into code. Welcome to my save file.
+        </p>
+        <div class="hero-cta">
+          <a href="#portfolio" class="btn-pixel">VIEW WORK ▸</a>
+          <a href="#contact" class="btn-pixel alt">CONTACT ME</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACT ============ -->
+  <section id="contact">
+    <div class="container">
+      <span class="section-label">multiplayer.connect()</span>
+      <h2 class="section-title">GET IN TOUCH</h2>
+      <div class="pixel-panel contact-panel">
+        <p>Press START to connect. Available for freelance quests and full-time party invites.</p>
+        <div class="contact-buttons">
+          <a href="https://instagram.com/" target="_blank" rel="noopener" class="contact-btn instagram">
+            📷 INSTAGRAM
+          </a>
+          <a href="https://wa.me/10000000000" target="_blank" rel="noopener" class="contact-btn whatsapp">
+            💬 WHATSAPP
+          </a>
+          <a href="https://youtube.com/" target="_blank" rel="noopener" class="contact-btn youtube">
+            ▶ YOUTUBE
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ COMING SOON ============ -->
+  <section id="coming-soon">
+    <div class="container">
+      <span class="section-label">next_level.loading</span>
+      <h2 class="section-title">MORE COMING SOON</h2>
+      <div class="pixel-panel coming-soon-panel">
+        <div class="coming-soon-icon">⏳</div>
+        <h3>SKILLS · RESUME · AWARDS · PORTFOLIO</h3>
+        <p>This level is still being built. Check back soon for the full quest log.</p>
+        <div class="loading-bar-track">
+          <div class="loading-bar-fill"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <span>[ EOF ]</span> © 2026 PIXEL_DEV — ALL RIGHTS RESPAWNED
+  </footer>
+
+  <script>
+    // Mobile nav toggle
+    const navToggle = document.getElementById('navToggle');
+    const navLinks = document.getElementById('navLinks');
+
+    navToggle.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+    });
+
+    // Close mobile menu after clicking a link
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+      });
+    });
+  </script>
+
+</body>
+</html>
